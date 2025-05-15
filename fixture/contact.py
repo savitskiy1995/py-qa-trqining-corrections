@@ -83,11 +83,10 @@ class ContactHelper:
         self.open_contacts_homepage()
         self.contact_cache = None
 
-    def edit_contact_by_id(self, index, new_contact_data):
+    def edit_contact_by_id(self, id, new_contact_data):
         wd = self.app.wd
         self.open_contacts_homepage()
-
-        wd.find_elements_by_css_selector('img[alt="Edit"]')[index].click()
+        wd.find_element(By.CSS_SELECTOR,"a[href='edit.php?id=%s']" % id).click()
         self.fill_contact_form(new_contact_data)
         wd.find_element_by_name("update").click()
         self.open_contacts_homepage()
