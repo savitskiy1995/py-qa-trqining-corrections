@@ -1,6 +1,14 @@
+from random import randrange
+
 from model.group import Group
 
 def test_edit_group(app):
-    if not app.group.is_contact_exist():
-        app.group.create(Group(name="new_group", header="logo"))
-    app.group.edit_group(Group(name="Edit group", header="Edit header"))
+    old_groups = app.group.get_group_list()
+    index = randrange(len(old_groups))
+    group = Group(name="Edit group", header="Edit header")
+    group.id = old_groups[index].id
+    app.group.edit_group_by_index(group, index)
+    new_groups = app.group.get_group_list()
+    assert len(old_groups) == len(new_groups)
+    old_groups[index] = group
+    assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
