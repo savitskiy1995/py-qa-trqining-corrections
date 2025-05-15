@@ -1,5 +1,7 @@
+from model.group import Group
+
 
 def test_delete_first_group(app):
-    app.session.login(username="admin", password="secret")
+    if not app.group.is_contact_exist():
+        app.group.create(Group(name="new_group", header="logo"))
     app.group.delete_first_group()
-    app.session.logout()

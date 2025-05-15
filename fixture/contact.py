@@ -1,10 +1,14 @@
 from selenium.webdriver.common.by import By
 
+from model import contact
+from model.contact import Contact
+
 
 class ContactHelper:
 
     def __init__(self, app):
         self.app = app
+
 
     def create_contact(self, contact):
         wd = self.app.wd
@@ -15,12 +19,14 @@ class ContactHelper:
         self.app.wait_for_element(By.XPATH, "//div[@id='content']/form/input[20]").click()
         self.return_to_home_page()
 
+
     def fill_contact_form(self, contact):
         self.app.wait_for_element(By.NAME, "firstname").send_keys(contact.firstname)
         self.app.wait_for_element(By.NAME, "lastname").send_keys(contact.lastname)
         self.app.wait_for_element(By.NAME, "company").send_keys(contact.company)
         self.app.wait_for_element(By.NAME, "home").send_keys(contact.home_phone)
         self.app.wait_for_element(By.NAME, "email").send_keys(contact.email)
+
 
     def open_add_contact_page(self):
         self.app.wait_for_element(By.LINK_TEXT, "add new").click()
@@ -40,5 +46,8 @@ class ContactHelper:
         wd = self.app.wd
         self.app.wait_for_element(By.XPATH, "//img[@title='Edit']").click()
         self.fill_contact_form(contact)
-        self.app.wait_for_element(By.NAME, "update").click()
-        self.return_to_home_page()
+
+
+    def is_contact_exist(self):
+        wd = self.app.wd
+        return len(wd.find_elements(By.NAME, "selected[]")) > 0

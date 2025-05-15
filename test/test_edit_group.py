@@ -1,7 +1,6 @@
 from model.group import Group
 
-
 def test_edit_group(app):
-    app.session.login(username="admin", password="secret")
+    if not app.group.is_contact_exist():
+        app.group.create(Group(name="new_group", header="logo"))
     app.group.edit_group(Group(name="Edit group", header="Edit header"))
-    app.session.logout()
